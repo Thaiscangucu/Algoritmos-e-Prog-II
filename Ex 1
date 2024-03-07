@@ -1,0 +1,29 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+
+int main()
+{
+int dado;
+srand(time(NULL)); 
+dado = rand()%100 + 1; 
+printf("Lancei o dado! Tente adivinhar o seu valor...\n");
+int palpite;
+printf("Seu palpite: ");
+scanf("%d", &palpite);
+while (palpite != dado){
+  if (palpite < 1 || palpite > 100){
+    printf("Valor inválido! Digite um valor entre 1 e 100. \n");
+    scanf("%d", &palpite);
+  }
+  printf ("Não foi desta vez...\n");
+  printf("Seu palpite: ");
+  scanf("%d", &palpite);
+}  
+
+printf ("Você adivinhou! \n");
+printf("valor do dado lançado: %d\n", dado);
+
+return 0;
+}
