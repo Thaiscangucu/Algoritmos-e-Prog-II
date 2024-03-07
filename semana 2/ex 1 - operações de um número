@@ -1,0 +1,25 @@
+#include <stdio.h>
+#include <stdint.h>
+
+int main() {
+  int num;
+  int num2;
+  int soma;
+  int subtracao;
+  int multiplicacao;
+  int divisao;
+  printf("Digite 1 número: ");
+  scanf("%d", &num);
+  printf("Digite 1 número: ");
+  scanf("%d", &num2);
+  soma = num + num2;
+  subtracao = num - num2;
+  multiplicacao = num * num2;
+  divisao = num / num2;
+  printf("soma = %d\n", soma);
+  printf("subtracao = %d\n", subtracao);
+  printf("multiplicacao = %d\n", multiplicacao);
+  printf("divisao = %d\n", divisao);
+ 
+   return 0;
+}
