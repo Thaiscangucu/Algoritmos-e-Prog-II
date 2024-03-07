@@ -1,0 +1,21 @@
+#include <stdio.h>
+#include <math.h>
+
+float hipotenusa(float cat1, float cat2){
+  float hip;
+  hip = sqrt(cat1*cat1 + cat2*cat2);
+  return hip;
+  
+}
+
+int main () {
+  float cat1,cat2,hip;
+  printf("Cateto 1: ");
+  scanf("%f", &cat1);
+  printf("Cateto 2: ");
+  scanf("%f", &cat2);
+  hip = hipotenusa(cat1,cat2);
+printf("Hipotenusa: %f\n", hip);
+
+  return 0;
+}
