@@ -1,0 +1,15 @@
+#include <stdio.h>
+
+int main() {
+  printf("Insira um número para ver seus divisores:");
+  int num;
+  scanf("%d", &num);
+  printf("Os divisores de %d são: ", num);
+  for (int i = 1; i <= num; i++){
+    if (num % i == 00){
+      printf("\n%d", i);
+    }
+  }
+  printf("\n");
+  return 0;
+}
