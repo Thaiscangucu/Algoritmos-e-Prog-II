@@ -15,7 +15,7 @@ int main () {
   printf("Cateto 2: ");
   scanf("%f", &cat2);
   hip = hipotenusa(cat1,cat2);
-printf("Hipotenusa: %f\n", hip);
+printf("Hipotenusa: %.2f\n", hip);
 
   return 0;
 }
