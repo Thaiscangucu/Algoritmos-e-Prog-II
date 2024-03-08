@@ -7,7 +7,7 @@ int main (){
    printf("Temperatura em °C: ");
    scanf("%f", &c);
    f = (9*c+160)/5;
-   printf("Temperatura em °F: %f", f);
+   printf("Temperatura em °F: %.1f", f);
   
   return 0;
 }
