@@ -36,9 +36,8 @@ while (vitoria == 0){
   tentativas++;
   printf("Tente novamente: ");
   scanf("%d", &palpite);
-  
+
 } 
 printf("Número: %d\n", dado);
-printf ("Tentativas: %d\n", tentativas);
 return 0;
 }
