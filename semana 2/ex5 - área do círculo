@@ -4,11 +4,10 @@
 int main() {
     float r;
     float a; 
-    printf("Raio em M:");
+    printf("Raio em metros:");
     scanf ("%f", &r);
     a = M_PI*(r*r);
-    printf("Um círculo com raio: %.1f M tem uma área igual a: %.1f M", r, a);
-  
+    printf("Um círculo com raio: %.1f m tem uma área igual a: %.1f m", r, a);
+
     return 0;
 }
-  
