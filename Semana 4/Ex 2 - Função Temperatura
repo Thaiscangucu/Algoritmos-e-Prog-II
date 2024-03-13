@@ -1,0 +1,30 @@
+#include <stdio.h>
+
+float c2f(float c){
+  return (c*9/5) + 32;
+}
+float f2c(float f){
+  return(f - 32)/1.8;
+}
+int main(){
+  float c, f;
+  printf("Escolha uma opção: \n");
+  printf("(1) Converter de Celsius para Fahrenheit \n");
+  printf("(2) Converter de Fahernheit para Celsius \n");
+  int escolha;
+  scanf("%d", &escolha);
+  if (escolha == 1){
+    printf("Digite a temperatura em Celsius: \n");
+    scanf("%f", &c);
+    printf("%.1f˚C = %.1f˚F", c, c2f(c) );
+ }
+else{
+  printf("Digite a temperatura em Fahrenheit: \n");
+  scanf("%f", &f);
+  printf("%.1f˚F = %.1f˚C", f, f2c(f));
+}
+return 0;
+
+}
+
+
