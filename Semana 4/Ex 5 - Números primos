@@ -1,0 +1,32 @@
+#include <stdio.h>
+#include <stdbool.h>
+
+bool primo(int n){
+  int i;
+  for(i=2; i<n; i++){
+    if(n%i==0){
+      return false;
+    }
+    else{
+      return true;
+    }
+  }
+}
+
+int primo2 (int n1, int n2){
+  for(int i=n1; i<n2; i++){
+    if(primo(i)){
+      printf("%d ", i);
+    }
+  }
+}
+int main(){
+  int n, n1, n2;
+  printf("Digite um número: ");
+  scanf("%d", &n1);
+  printf("Digite mais um número: ");
+  scanf("%d", &n2);
+  
+  primo2(n1, n2);
+  return 0;
+}
