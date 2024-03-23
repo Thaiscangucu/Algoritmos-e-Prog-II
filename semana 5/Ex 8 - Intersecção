@@ -1,0 +1,33 @@
+#include <stdio.h>
+
+void inter(int a[], int b[], int n, int m){
+  for(int i=0; i<n; i++){
+    for(int j=0; j<m; j++){
+      if(a[i]== b[j]){
+        printf( "%d ", a[i]);
+      }
+    }
+  }
+}
+
+int main() {
+    int a[] = {7,2,5,8,4};
+    int b[] = {4,2,9,5};
+    int n = 5;
+    int m = 4;
+    int i;
+    
+    printf("\nA: ");
+    for(i=0; i<n; i++){
+      printf("%d ", a[i]);
+    }
+    int j;
+    printf("\nB: ");
+    for(j=0; j<m; j++){
+      printf("%d ", b[j]);
+    }
+    printf("\n");
+    printf("Intersecção:");
+    inter(a,b,n,m);
+    return 0;
+}
