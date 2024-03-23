@@ -1,0 +1,47 @@
+#include <stdio.h>
+
+
+void uniao(int a[], int n, int b[], int m, int c[], int *c_tam) {
+    int i, j, k;
+    for (i = 0; i < n; i++) {
+        c[i] = a[i];
+    }
+    *c_tam = n;
+    for (i = 0; i < m; i++) {
+        int exists = 0;
+        for (j = 0; j < *c_tam; j++) {
+            if (b[i] == c[j]) {
+                exists = 1;
+                break;
+            }
+        }
+        if (!exists) {
+            c[*c_tam] = b[i];
+            (*c_tam)++;
+    }
+  }
+}
+int main() {
+    int a[] = {7,2,5,8,4};
+    int n = sizeof(a) / sizeof(a[0]);
+    int b[] = {4,2,9,5};
+    int m = sizeof(b) / sizeof(b[0]);
+    int c[n + m];
+    int c_tam;
+    uniao(a, n, b, m, c, &c_tam);
+  printf("A: ");
+  for (int i = 0; i < n; i++) {
+      printf("%d ", a[i]);
+  }
+  printf("\n");
+  printf("B: ");
+  for (int i = 0; i < m; i++) {
+      printf("%d ", b[i]);
+  }
+    printf("\n");
+    printf("União: ");
+    for (int i = 0; i < c_tam; i++){
+        printf("%d ", c[i]);
+    }
+    return 0;
+}
