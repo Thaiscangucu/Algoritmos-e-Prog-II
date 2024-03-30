@@ -1,0 +1,44 @@
+#include <stdio.h>
+
+
+void soma(int n, int m, int A[][m], int B[][m], int C[][m]){
+  int i, j;
+  for(i=0; i<n; i++){
+    for(j=0; j<m; j++){
+      C[i][j] = A[i][j] + B[i][j];
+    }
+  }printf("\n");
+}
+  
+int main(){
+  int n, m;
+  printf("Número de linhas: ");
+  scanf("%d", &n);
+  printf("Número de colunas: ");
+  scanf("%d", &m);
+  int A[n][m], B[n][m], C[n][m];
+  int i,j;
+
+  for(i=0; i<n; i++){
+    for(j=0; j<m; j++){
+      printf("Elemento A[%d][%d]:", i,j);    
+      scanf("%2d", &A[i][j]);
+    }
+  }
+  for(i=0; i<n; i++){
+    for(j=0; j<m; j++){
+      printf("Elemento B[%d][%d]:", i,j);        
+      scanf("%d", &B[i][j]);
+    }
+  }
+soma(n,m,A,B,C);
+printf("Soma das matrizes A e B:\n"); 
+  for(i=0; i<n; i++){
+    for(j=0; j<m; j++){
+      printf("%d\t", C[i][j]);
+    }
+    printf("\n");  
+  }
+return 0;
+
+}
