@@ -1,0 +1,25 @@
+#include <stdio.h>
+
+int qnt_divisivel(int vet[], int tam, int x) {
+    if (tam == 0) {
+        return 0;
+    }
+    if (vet[tam - 1] % x == 0) {
+      return 1 + qnt_divisivel(vet, tam - 1, x);
+    }
+    else {
+      return qnt_divisivel(vet, tam - 1, x);
+    }
+}
+
+int main() {
+    int vet[] = {3, 6, 9, 12, 15};
+    int tam = 5;
+    int x = 3;
+    printf("Na lista [ ");
+    for(int i = 0; i < tam; i++){
+      printf("%d ", vet[i]);
+    }
+    printf("], a quantidade de números divisíveis por %d é: %d", x, qnt_divisivel(vet, tam, x));
+    return 0;
+}
