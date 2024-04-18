@@ -1,0 +1,25 @@
+#include <stdio.h>
+
+int soma_divisiveis(int vet[], int tam, int x) {
+    if (tam == 0) {
+        return 0;
+    }
+    if (vet[tam - 1] % x == 0) {
+      return vet[tam-1] + soma_divisiveis(vet, tam - 1, x);;
+    }
+    else{
+      return  soma_divisiveis(vet, tam - 1, x);
+    }
+}
+
+int main() {
+    int vet[] = {3, 6, 9, 12, 15};
+    int tam = 5;
+    int x = 3;
+    printf("Na lista [ ");
+    for(int i = 0; i < tam; i++){
+      printf("%d ", vet[i]);
+    }
+    printf("], a soma dos números divisíveis por %d é: %d", x, soma_divisiveis(vet, tam, x));
+    return 0;
+}
