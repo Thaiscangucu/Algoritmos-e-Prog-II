@@ -1,0 +1,57 @@
+#include <stdio.h>
+
+//Ex 1 
+//c)
+
+//Função que cria matriz com números aleatórios de 1 a 100
+void cria_Matriz(int linhas, int colunas, int matriz[linhas][colunas]){  
+  srand(time(NULL));
+  int i, j;
+  for(i = 0; i < linhas; i++){
+    for(j = 0; j < colunas; j++){
+      matriz[i][j] = rand() % 100 + 1;
+      printf("[%d]", matriz[i][j]);
+    }
+    printf("\n");
+  }
+}
+
+//Função que verifica o maior elemento de uma matriz
+int verifica_Maior(int linhas, int colunas, int matriz[linhas][colunas]){
+  
+  int maior_numero = matriz[0][0];
+  int i, j;
+  for(i = 0; i < linhas; i++){
+    for(j = 0; j < colunas; j++){
+      if(matriz[i][j] > maior_numero){
+        maior_numero = matriz[i][j]; 
+      }
+    }
+  }
+  return maior_numero;
+}
+
+
+
+int main() {
+  int linhas, colunas;
+
+  //Recebe numero de linhas e colunas 
+  printf("numero de linhas: ");
+  scanf("%d", &linhas);
+  printf("numero de colunas: ");
+  scanf("%d", &colunas);
+
+  //Declara matriz
+  int matriz[linhas][colunas], i, j;
+
+  //Chama função que cria matriz com números aleatórios de 1 a 100
+  cria_Matriz(linhas, colunas, matriz);
+
+  //Chama função que verifica o maior elemento em uma matriz
+  int maior_numero = verifica_Maior(linhas, colunas, matriz);
+  printf("O maior némero desta matriz é [%d]", maior_numero);
+
+
+  return 0;
+  }
