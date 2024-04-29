@@ -3,16 +3,17 @@
 //Ex 1 
 //b)
 void cria_Matriz(int linhas, int colunas, int matriz[linhas][colunas]){
+  srand(time(NULL));
   int i, j;
-	for(i = 0; i < linhas; i++){
+  for(i = 0; i < linhas; i++){
     for(j = 0; j < colunas; j++){
       matriz[i][j] = rand() % 100 + 1;
-      printf("%d", matriz[i][j]);
+      printf("[%d]", matriz[i][j]);
     }
     printf("\n");
   }
 }
-	
+
 int main() {
   int linhas, colunas;
 
@@ -21,10 +22,10 @@ int main() {
   scanf("%d", &linhas);
   printf("numero de colunas: ");
   scanf("%d", &colunas);
-
-  int m[linhas][colunas], i, j;
+  //declara matriz
+  int matriz[linhas][colunas], i, j;
+  //chama função que cria matriz com números aleatórios de 1 a 100
   cria_Matriz(linhas, colunas, matriz);
-	  
+
+  return 0;
   }
-	return 0;
-}
