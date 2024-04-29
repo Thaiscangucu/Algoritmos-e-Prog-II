@@ -40,6 +40,6 @@ int main() {
    printf("\n");	  
   }
   int maior_numero = verifica_Maior(linhas, colunas, m);
-  printf("maior numero da matriz: %d", maior_numero);
+  printf("O maior némero desta matriz: %d", maior_numero);
   return 0;
 }
