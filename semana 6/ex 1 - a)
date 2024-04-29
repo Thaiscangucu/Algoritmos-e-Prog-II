@@ -39,7 +39,7 @@ int main() {
     }
    printf("\n");	  
   }
-  int maior = verifica_Maior(linhas, colunas, m);
-  printf("maior numero da matriz: %d", maior);
+  int maior_numero = verifica_Maior(linhas, colunas, m);
+  printf("maior numero da matriz: %d", maior_numero);
   return 0;
 }
