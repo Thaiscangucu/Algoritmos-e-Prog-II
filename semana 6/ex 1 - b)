@@ -1,0 +1,30 @@
+#include <stdio.h>
+
+//Ex 1 
+//b)
+void cria_Matriz(int linhas, int colunas, int matriz[linhas][colunas]){
+  int i, j;
+	for(i = 0; i < linhas; i++){
+    for(j = 0; j < colunas; j++){
+      matriz[i][j] = rand() % 100 + 1;
+      printf("%d", matriz[i][j]);
+    }
+    printf("\n");
+  }
+}
+	
+int main() {
+  int linhas, colunas;
+
+  //recebe numero de linhas e colunas 
+  printf("numero de linhas: ");
+  scanf("%d", &linhas);
+  printf("numero de colunas: ");
+  scanf("%d", &colunas);
+
+  int m[linhas][colunas], i, j;
+  cria_Matriz(linhas, colunas, matriz);
+	  
+  }
+	return 0;
+}
