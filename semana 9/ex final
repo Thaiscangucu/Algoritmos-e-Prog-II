@@ -1,1 +1,145 @@
+#include <stdio.h>
+#include <stdlib.h>
 
+#define MAX_SIZE 100
+
+int count(int arr[], int size, int element) {
+    int count = 0;
+    for (int i = 0; i < size; i++) {
+        if (arr[i] == element) {
+            count++;
+        }
+    }
+    return count;
+}
+
+int index(int arr[], int size, int element) {
+    for (int i = 0; i < size; i++) {
+        if (arr[i] == element) {
+            return i;
+        }
+    }
+    return -1; 
+}
+
+void reverse(int arr[], int size) {
+    int start = 0;
+    int end = size - 1;
+    while (start < end) {
+        int temp = arr[start];
+        arr[start] = arr[end];
+        arr[end] = temp;
+        start++;
+        end--;
+    }
+}
+
+int compare(const void *a, const void *b) {
+    return (*(int *)a - *(int *)b);
+}
+
+void sort(int arr[], int size) {
+    qsort(arr, size, sizeof(int), compare);
+}
+
+void append(int arr[], int *size, int element) {
+    if (*size < MAX_SIZE) {
+        arr[*size] = element;
+        (*size)++;
+    } else {
+        printf("Erro: Array cheio\n");
+    }
+}
+
+void insert(int arr[], int *size, int index, int element) {
+    if (*size >= MAX_SIZE) {
+        printf("Erro: Array cheio\n");
+        return;
+    }
+    if (index < 0 || index >= *size) {
+        printf("Erro: Índice inválido\n");
+        return;
+    }
+    for (int i = *size; i > index; i--) {
+        arr[i] = arr[i - 1];
+    }
+    arr[index] = element;
+    (*size)++;
+}
+
+int pop(int arr[], int *size) {
+    if (*size <= 0) {
+        printf("Erro: Array vazio\n");
+        return -1;
+    }
+    (*size)--;
+    return arr[*size];
+}
+
+void remove_element(int arr[], int *size, int element) {
+    int found = 0;
+    for (int i = 0; i < *size; i++) {
+        if (arr[i] == element) {
+            found = 1;
+            for (int j = i; j < *size - 1; j++) {
+                arr[j] = arr[j + 1];
+            }
+            (*size)--;
+            break;
+        }
+    }
+    if (!found) {
+        printf("Erro: Elemento não encontrado\n");
+    }
+}
+
+int main() {
+    int arr[MAX_SIZE] = {5, 3, 7};
+    int size = 3;
+
+    printf("Lista original: ");
+    for (int i = 0; i < size; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\nCount of 3: %d\n", count(arr, size, 3));
+    printf("Index of 7: %d\n", index(arr, size, 7));
+
+    append(arr, &size, 2);
+    printf("Lista com append: ");
+    for (int i = 0; i < size; i++) {
+        printf("%d ", arr[i]);
+    }
+ 
+    insert(arr, &size, 1, 2);
+    printf("\nLista com inserção: ");
+    for (int i = 0; i < size; i++) {
+        printf("%d ", arr[i]);
+    }
+
+    int popped = pop(arr, &size);
+    printf("\nPopped element: %d\n", popped);
+    printf("Lista com pop: ");
+    for (int i = 0; i < size; i++) {
+        printf("%d ", arr[i]);
+    }
+
+    remove_element(arr, &size, 2);
+    printf("\nLista com remoção: ");
+    for (int i = 0; i < size; i++) {
+        printf("%d ", arr[i]);
+    }
+
+    printf("\nLista com reversão: ");
+    reverse(arr, size);
+    for (int i = 0; i < size; i++) {
+        printf("%d ", arr[i]);
+    }
+
+    printf("\nLista com ordenação: ");
+    sort(arr, size);
+    for (int i = 0; i < size; i++) {
+        printf("%d ", arr[i]);
+    }
+
+    return 0;
+}
