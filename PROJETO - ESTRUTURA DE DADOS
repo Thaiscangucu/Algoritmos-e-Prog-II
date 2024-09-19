@@ -1,0 +1,649 @@
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
+ 
+class Fila<T> {
+    private static final int TAM_DEFAULT = 100;
+    private int inicio, fim, qtd;
+    private Object[] e; // Alterado de T[] para Object[]
+
+    public Fila(int tamanho) {
+        this.inicio = 0;
+        this.fim = 0;
+        this.qtd = 0;
+        e = new Object[tamanho]; // Sem cast
+    }
+
+    public Fila() {
+        this(TAM_DEFAULT); 
+    }
+
+    public boolean qIsEmpty() {
+        return (qtd == 0);
+    }
+
+    public boolean qIsFull() {
+        return (qtd == e.length);
+    }
+
+    public void enqueue(T elemento) throws Exception { 
+        if (!qIsFull()) {
+            this.e[this.fim++] = elemento;
+            this.fim = this.fim % this.e.length;
+            this.qtd++;
+        } else {
+            throw new Exception("Overflow - Estouro de Fila");
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public T dequeue() throws Exception {
+        T aux;
+        if (!qIsEmpty()) {
+            aux = (T) this.e[this.inicio]; // Cast seguro para T
+            this.inicio = ++this.inicio % this.e.length;
+            this.qtd--;
+            return aux;
+        } else {
+            throw new Exception("Underflow - Esvaziamento de Fila");
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public T front() throws Exception {
+        if (!qIsEmpty()) {
+            return (T) e[inicio]; // Cast seguro para T
+        } else {
+            throw new Exception("Underflow - Esvaziamento de Fila"); 
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public T rear() throws Exception {
+        if (!qIsEmpty()) {
+            int pfinal = (this.fim != 0) ? this.fim - 1 : this.e.length - 1;
+            return (T) this.e[pfinal]; // Cast seguro para T
+        } else {
+            throw new Exception("Underflow - Esvaziamento de Fila");
+        }
+    }
+
+    public int totalElementos() {
+        return qtd;
+    }
+}
+
+class Pilha {
+
+    private static final int TAM_DEFAULT = 100;
+    private int topoPilha;
+    private char[] e; // Array de char
+
+    public Pilha(int tamanho) {
+        this.e = new char[tamanho];
+        this.topoPilha = -1;
+    }
+
+    public Pilha() {
+        this(TAM_DEFAULT);
+    }
+
+    public boolean isEmpty() {
+        return this.topoPilha == -1;    
+    }
+
+    public boolean isFull() {
+        return this.topoPilha == this.e.length-1;    
+    }
+
+    public void push(char e) {
+        if (!this.isFull()) {
+            this.e[++this.topoPilha] = e;
+        } else {
+            System.out.println("Overflow - Estouro de Pilha");
+        }
+    }
+
+    public char pop() {
+        if (!this.isEmpty()) {
+            return this.e[this.topoPilha--];
+        } else {
+            System.out.println("Underflow - Esvaziamento de Pilha");
+            return '\0'; // Retorna char nulo em caso de underflow
+        }
+    }
+
+    public char topo() {
+        if (!this.isEmpty()) {
+            return this.e[this.topoPilha];
+        } else {
+            System.out.println("Underflow - Esvaziamento de Pilha");
+            return '\0'; // Retorna char nulo em caso de pilha vazia
+        }
+    }
+
+    public int totalElementos() {
+        return topoPilha + 1;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[Pilha] topoPilha: ")
+            .append(topoPilha)
+            .append(", capacidade: ")
+            .append(e.length)
+            .append(", quantidade de elementos: ")
+            .append(totalElementos());
+        if (topoPilha != -1) {
+            sb.append(", valor do Topo: ")
+                .append(topo());
+        } else {
+            sb.append(", valor do Topo: PILHA VAZIA");
+        }
+
+        sb.append("\nConteúdo da Pilha: [ ");
+
+        for (int i = 0; i <= topoPilha; ++i) {
+            if (i != topoPilha) {
+                sb.append(e[i]).append(", ");
+            } else {
+                sb.append(e[i]);
+            }
+        }
+        sb.append(" ]");
+        return sb.toString();
+    }
+}
+
+
+
+public class Main {
+
+    static boolean isRecording;
+    public static void main(String[] args) {
+        Commands c = new Commands();
+        Scanner s = new Scanner(System.in);
+
+        // Loop do Menu Principal
+        while (true) {
+            System.out.println("Menu Principal:");
+            System.out.println("1 - REC");
+            System.out.println("2 - STOP");
+            System.out.println("3 - EXIT");
+            System.out.println("Escolha uma opção: ");
+            String comando = s.nextLine();
+
+            switch (comando) {
+                case "1": // REC
+                    recMenu(c, s); // Chama o Menu Secundário após selecionar REC
+                    break;
+                case "2": // STOP
+                    Commands.stop();
+                    break;
+                case "3": // EXIT
+                    c.exit();
+                    break;
+                default:
+                    System.out.println("Erro: comando inválido.");
+                    break;
+            }
+        }
+    }
+
+    // Menu Secundário - Exibido após o usuário escolher "REC"
+    private static void recMenu(Commands c, Scanner s) {
+
+        // Fila para armazenar variáveis e expressões (máximo de 10 elementos)
+        Fila<Object> recQueue = new Fila<>(10);
+
+        // Mapa para armazenar variáveis
+        Map<String, Integer> variables = new HashMap<>();
+
+
+        while (true) {
+
+            System.out.println("Menu REC:");
+            System.out.println("1 - STOP");
+            System.out.println("2 - ERASE");
+            System.out.println("3 - PLAY");
+            System.out.println("4 - RESET");
+            System.out.println("5 - VAR");
+            System.out.println("6 - EXPRESSION");
+            System.out.println("7 - Voltar ao Menu Principal");
+            System.out.println("Escolha uma opção: ");
+            String comando = s.nextLine();
+
+            try {
+                switch (comando) {
+                    case "1": // STOP
+                        Commands.stop();
+                        return; // Volta ao Menu Principal
+                    case "2": // ERASE
+                        System.out.println("Apagando a fila...");
+                        while (!recQueue.qIsEmpty()) {
+                            recQueue.dequeue(); // Esvazia a fila
+                        }
+                        break;
+                    case "3": // PLAY
+                        System.out.println("Conteúdo da fila REC:");
+                        c.play(recQueue, variables); // Agora passa o mapa de variáveis para `play`
+                        break;
+                    case "4": // RESET
+                        c.reset();
+                        break;
+                    case "5": // VAR
+                        if (!recQueue.qIsFull()) {
+                            Map<String, Integer> variable = c.var();
+                            recQueue.enqueue(variable);
+                            variables.putAll(variable); // Adiciona a variável ao mapa
+                            System.out.println("Variável adicionada à fila REC.");
+                        } else {
+                            System.out.println("Erro: fila REC está cheia.");
+                        }
+                        break;
+                    case "6": // EXPRESSION
+                        if (variables.isEmpty()) {
+                            System.out.println("Erro: Nenhuma variável declarada. Declare variáveis primeiro.");
+                        } else if (!recQueue.qIsFull()) {
+                            Pilha expressionResult = c.expression();
+                            recQueue.enqueue(expressionResult);
+                            System.out.println("Expressão adicionada à fila REC.");
+                        } else {
+                            System.out.println("Erro: fila REC está cheia.");
+                        }
+                        break;
+                    case "7": // Voltar ao Menu Principal
+                        return;
+                    default:
+                        System.out.println("Erro: comando inválido.");
+                        break;
+                }
+
+                // Exibe o conteúdo atual da fila REC
+                System.out.println("Total de elementos na fila REC: " + recQueue.totalElementos());
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+}
+
+
+
+class Commands {
+    public Pilha expression() {
+          Scanner s = new Scanner(System.in);
+          System.out.println("Digite a expressão:");
+          String expressao = s.nextLine();
+          String expressaoSemEspacos = expressao.replaceAll("\\s+", "");
+
+          if (!isValidExpression(expressaoSemEspacos)) {
+              System.out.println("Erro: Expressão inválida.");
+              return new Pilha();  // Retorna uma pilha vazia
+          }
+
+          Pilha p = new Pilha(expressaoSemEspacos.length());
+
+          // Percorrendo cada caractere da expressão
+          for (int i = 0; i < expressaoSemEspacos.length(); i++) {
+              char c = expressaoSemEspacos.charAt(i);
+
+              if (Character.isLetterOrDigit(c)) {
+                  System.out.print(c); // Exibe os operandos diretamente
+              } else if (c == '(') {
+                  p.push(c);
+              } else if (c == ')') {
+                  while (!p.isEmpty() && p.topo() != '(') {
+                      System.out.print((char) p.pop()); // Exibe os operadores
+                  }
+                  p.pop(); // Remove o parêntese de abertura
+              } else {
+                  while (!p.isEmpty() && precedencia(c) <= precedencia((char) p.topo())) {
+                      System.out.print((char) p.pop()); // Exibe os operadores
+                  }
+                  p.push(c);
+              }
+          }
+
+          while (!p.isEmpty()) {
+              System.out.print((char) p.pop()); // Exibe operadores restantes
+          }
+
+          return p; // Retorna a pilha de operadores
+      }
+
+
+    // Função para validar a expressão
+    private boolean isValidExpression(String expressao) {
+        Pilha p = new Pilha(expressao.length());
+        boolean ultimoFoiOperador = true;
+
+        for (int i = 0; i < expressao.length(); i++) {
+            char c = expressao.charAt(i);
+
+            if (Character.isLetterOrDigit(c)) {
+                ultimoFoiOperador = false;
+            } else if (c == '(') {
+                p.push(c);
+            } else if (c == ')') {
+                if (p.isEmpty() || p.pop() != '(') {
+                    return false; // Parênteses não balanceados
+                }
+            } else if (isOperator(c)) {
+                if (ultimoFoiOperador) {
+                    return false; // Dois operadores seguidos
+                }
+                ultimoFoiOperador = true;
+            } else {
+                return false; // Caractere inválido
+            }
+        }
+
+        return p.isEmpty() && !ultimoFoiOperador; // Verifica se todos os parênteses foram fechados e o último caractere não é um operador
+    }
+
+    // Verifica se o caractere é um operador
+    private boolean isOperator(char c) {
+        return c == '+' || c == '-' || c == '*' || c == '/' || c == '^';
+    }
+
+    private int precedencia(char c) {
+        switch (c) {
+            case '+', '-' -> {
+                return 1;
+            }
+            case '*', '/' -> {
+                return 2;
+            }
+            case '^' -> {
+                return 3;
+            }
+        }
+        return -1;
+    }
+
+    public Map<String, Integer> var() {
+        Scanner s = new Scanner(System.in);
+        Map<String, Integer> variable = new HashMap<>();
+
+        System.out.println("Digite o nome da variável: ");
+        String nomeVariavel = s.nextLine();
+
+        System.out.println("Digite o valor inteiro da variável: ");
+        int valor = s.nextInt();
+
+        // Armazena a variável no mapa
+        variable.put(nomeVariavel, valor);
+
+        System.out.println("Variável '" + nomeVariavel + "' com valor " + valor + " criada.");
+
+        return variable; // Retorna a variável criada
+    }
+    
+    public static void erase(Fila<?> fila) {
+        int i;
+        for(i = 0; i < 10; i++){
+            try {
+                fila.dequeue();
+            } catch (Exception ex) {
+            }
+        }
+      }
+
+     // Método para exibir apenas as variáveis e seus valores
+    public void vars(Fila<Object> recQueue) throws Exception {
+        System.out.println("Variáveis na fila REC:");
+        Fila<Object> tempQueue = new Fila<>(recQueue.totalElementos());
+
+        while (!recQueue.qIsEmpty()) {
+            Object item = recQueue.dequeue();
+            if (item instanceof Map<?, ?>) {
+                    System.out.println(item);
+            }
+            tempQueue.enqueue(item); // Armazena os itens temporariamente
+        }
+
+        // Recarrega os itens de volta na fila original
+        while (!tempQueue.qIsEmpty()) {
+            recQueue.enqueue(tempQueue.dequeue());
+        }
+    }
+
+    public void exit() {
+        System.out.println("Saindo...");
+        System.exit(0);
+    }
+
+    // Método para limpar toda a fila (RESET)
+    public void reset(Fila<Object> recQueue) throws Exception {
+        System.out.println("Resetando a fila REC...");
+        while (!recQueue.qIsEmpty()) {
+            recQueue.dequeue(); // Esvazia toda a fila
+        }
+        System.out.println("Fila limpa.");
+    }
+
+    public static void stop() {
+        System.out.println("Parando gravação...");
+        Main.isRecording = false;  // Para a gravação
+    }
+    
+    public static int getNumericValue(char ch) {
+          if (ch >= '0' && ch <= '9') {
+              return ch - '0'; // Converte caracteres '0'-'9' para 0-9
+          } else if (ch >= 'A' && ch <= 'Z') {
+              return ch - 'A' + 10; // Converte caracteres 'A'-'Z' para 10-35
+          } else if (ch >= 'a' && ch <= 'z') {
+              return ch - 'a' + 10; // Converte caracteres 'a'-'z' para 10-35
+          } else {
+              return -1; // Retorna -1 para caracteres que não têm valor numérico
+          }
+    }
+    
+    // Função que resolve expressões em notação polonesa reversa
+    private int resolveExpression(PilhaInt p, Map<String, Integer> variables) throws Exception {
+          PilhaInt operandos = new PilhaInt(p.totalElementos()); // Pilha de operandos
+
+          while (!p.isEmpty()) {
+              char token = (char) p.pop();
+
+              // Se for um operando (variável ou número), empilha
+              if (Character.isDigit(token)) {
+                  operandos.push(Character.getNumericValue(token)); // Converte o caractere numérico para inteiro e empilha
+              } else if (Character.isLetter(token)) {
+                  // Se for uma variável, busca seu valor no mapa e empilha
+                  String variable = String.valueOf(token);
+                  if (variables.containsKey(variable)) {
+                      operandos.push(variables.get(variable));
+                  } else {
+                      throw new Exception("Variável não encontrada: " + variable);
+                  }
+              } else {
+                  // Se for um operador, desempilha os dois operandos e aplica o operador
+                  int b = operandos.pop(); // Segundo operando
+                  int a = operandos.pop(); // Primeiro operando
+                  int result;
+
+                  switch (token) {
+                      case '+':
+                          result = a + b;
+                          break;
+                      case '-':
+                          result = a - b;
+                          break;
+                      case '*':
+                          result = a * b;
+                          break;
+                      case '/':
+                          if (b == 0) throw new ArithmeticException("Divisão por zero.");
+                          result = a / b;
+                          break;
+                      case '^':
+                          result = (int) Math.pow(a, b);
+                          break;
+                      default:
+                          throw new Exception("Operador inválido: " + token);
+                  }
+
+                  // Empilha o resultado da operação
+                  operandos.push(result);
+              }
+          }
+
+          // Verifica se há exatamente 1 operando no final
+          if (operandos.totalElementos() == 1) {
+              return operandos.pop();
+          } else {
+              System.out.println("Operandos restantes na pilha: " + operandos.totalElementos());
+              throw new Exception("Erro na expressão: operandos não resolvidos.");
+          }
+      }
+
+
+    // Função PLAY - Reproduz os comandos e resolve as expressões
+    public void play(Fila<Object> recQueue, Map<String, Integer> variables) throws Exception {
+          System.out.println("Reproduzindo comandos gravados:");
+
+          // Fila temporária para manter os itens da fila original
+          Fila<Object> tempQueue = new Fila<>(recQueue.totalElementos());
+
+
+
+          while (!recQueue.qIsEmpty()) {
+              Object item = recQueue.dequeue();
+
+              if (item instanceof Map<?, ?>) {
+                  // Caso seja uma variável, armazena no mapa para uso posterior
+                  @SuppressWarnings("unchecked")
+                  Map<String, Integer> varMap = (Map<String, Integer>) item;
+                  variables.putAll(varMap);
+                  System.out.println("Variável registrada: " + varMap);
+
+              } else if (item instanceof Pilha) {
+    // Caso seja uma expressão, resolva usando as variáveis
+    Pilha p = (Pilha) item;
+    System.out.println("Resolvendo expressão com as variáveis:");
+
+    // Cria uma nova PilhaInt para armazenar os operandos convertidos
+    PilhaInt pilhaInt = new PilhaInt(p.totalElementos());
+
+    // Converte a pilha de caracteres para inteiros, com base em variáveis ou dígitos
+    while (!p.isEmpty()) {
+        char token = p.pop();
+        
+        if (Character.isDigit(token)) {
+            // Converte o dígito para o inteiro correspondente
+            pilhaInt.push(Character.getNumericValue(token));
+        } else if (Character.isLetter(token)) {
+            // Se for uma variável, busca o valor no mapa de variáveis
+            String variable = String.valueOf(token);
+            if (variables.containsKey(variable)) {
+                pilhaInt.push(variables.get(variable));
+            } else {
+                throw new Exception("Variável não encontrada: " + variable);
+            }
+        } else {
+            // Empilha o operador diretamente como um caractere
+            pilhaInt.push(token); // Conversão necessária para o tipo int
+        }
+    }
+              
+    // Resolve a expressão utilizando a pilha de inteiros
+    int result = resolveExpression(pilhaInt, variables);
+    System.out.println("Resultado da expressão: " + result);
+}
+}
+}
+    
+    
+    
+    void reset() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+    
+}
+  
+class PilhaInt {
+    private static final int TAM_DEFAULT = 100;
+    private int topoPilha;
+    private int[] e;
+
+    public PilhaInt(int tamanho) {
+        this.e = new int[tamanho];
+        this.topoPilha = -1;
+    }
+
+    public PilhaInt() {
+        this(TAM_DEFAULT);
+    }
+
+    public boolean isEmpty() {
+        return this.topoPilha == -1;
+    }
+
+    public boolean isFull() {
+        return this.topoPilha == this.e.length - 1;
+    }
+
+    public void push(int e) {
+        if (!this.isFull()) {
+            this.e[++this.topoPilha] = e;
+        } else {
+            System.out.println("overflow - Estouro de Pilha");
+        }
+    }
+
+    public int pop() {
+        if (!this.isEmpty()) {
+            return this.e[this.topoPilha--];
+        } else {
+            System.out.println("underflow - Esvaziamento de Pilha");
+            return -1;
+        }
+    }
+
+    public int topo() {
+        if (!this.isEmpty()) {
+            return this.e[this.topoPilha];
+        } else {
+            System.out.println("underflow - Esvaziamento de Pilha");
+            return -1;
+        }
+    }
+
+    public int totalElementos() {
+        return topoPilha + 1;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[Pilha] topoPilha: ")
+          .append(topoPilha)
+          .append(", capacidade: ")
+          .append(e.length)
+          .append(", quantidade de elementos: ")
+          .append(totalElementos());
+        if (topoPilha != -1) {
+            sb.append(", valor do Topo: ")
+              .append(topo());
+        } else {
+            sb.append(", valor do Topo: PILHA VAZIA");
+        }
+
+        sb.append("\nConteudo da Pilha: [ ");
+        for (int i = 0; i <= topoPilha; ++i) {
+            if (i != topoPilha) {
+                sb.append(e[i]).append(", ");
+            } else {
+                sb.append(e[i]);
+            }
+        }
+        sb.append(" ]");
+        return sb.toString();
+    }
+}
+  
